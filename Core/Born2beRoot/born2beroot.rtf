@@ -1,0 +1,65 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww17680\viewh11600\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Born2beroot\
+\
+Hostname: avon-ben42\
+Root pw: verybadpassword -> V3rybadpassword\
+\
+username:        avon-ben\
+Username pw: relatief -> H3llow0rld	\
+\
+Encryption passphrase: verybadpassword\
+\
+Commands: \
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Add user to sudo group: 						/sbin/adduser username sudo\
+Check ssh status:               					sudo service ssh status\
+Add localhost to server: 						ssh localhost\
+SSH configuration file: 						/etc/ssh/sshd_config\
+Set hostname to \'91x\'92							sudo hostnamectl set-hostname \'91x\'92\
+open file to adjust user edited tasks at specific times:		sudo crontab -e \
+\
+Add a group								groupadd\
+\
+Path to password parameters: 					/etc/login.defs\
+									/etc/pam.d/common-password\
+Path to sudoers file							/etc/sudoers\
+\
+Check to see what is in sudo group: 				getent group sudo\
+\
+Check if password rules work for user \'93x\'94 : 			chage -l \'93x\'94 \
+\
+Delete user \'93x\'94 (as well as group): 				userdel -r \'93x\'94\
+\
+Check all the local users: 						cut -d: -f1 /etc/passwd\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+Ufw:\
+add accepted port: 							sudo ufw allow <port>\
+Check current ufw rules						sudo ufw status numbered\
+Delete rule								sudo ufw delete <number>\
+\
+\
+Ssh info: https://phoenixnap.com/kb/ssh-to-connect-to-remote-server-linux-or-windows\
+\
+Wget is a free and open source tool for downloading files from web repositories. \
+\
+\
+Awk manual: \
+https://www.howtogeek.com/562941/how-to-use-the-awk-command-on-linux/\
+\
+Print first field of file \'93x\'94:						x | awk \'91\{print $1\}\'92 \
+Print last field of file \'93x\'94:						x | awk \'91\{print $NF\}\'92\
+Set output field separator to / : 					OFS=\'93/\'93\
+\
+\
+\
+T3sthelloworld\
+}

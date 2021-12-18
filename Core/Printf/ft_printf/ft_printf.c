@@ -1,61 +1,54 @@
-#include "printf.h"
+#include "ft_printf.h"
 
-void	print_val(char type, int *input);
+int	print_val(char type, int *input);
 
 int	ft_printf(const char *str, ...)
 {
 	va_list	ptr;
 	int		i;
+	int		j;
 
 	va_start(ptr, str);
 	i = 0;
+	j = 0;
 	while (str[i])
 	{
-		if (str[i] == '%')
+		if (str[i] == ('%'))
 		{
-			i++;
+			str++;
 			if (str[i] == '%')
-				write(1, &str[i], 1);
+				ft_putchar_ret1('%');
 			else
-				print_val(str[i], va_arg(ptr, int *));
+				j += (print_val(str[i], va_arg(ptr, int *)) - 1);
 		}	
 		else
 			write(1, &str[i], 1);
 		i++;
 	}
 	va_end(ptr);
-	return (1);
+	return (i + j);
 }
 
-void	print_val(char type, int *input)
+int	print_val(char type, int *input)
 {
+	int	i;
+
+	i = 0;
 	if (type == 'c')
-		write(1, &input, 1);
+		i = ft_putchar_ret1((char)input);
 	if (type == 's')
-		ft_putstr_fd((char *)input, 1);
+		i = ft_putstr_strlen((char *)input);
 	if (type == 'p')
-		ft_putstr_fd((char *)&input, 1);
+		i = put_pt((unsigned long long)input);
 	if (type == 'd')
-		ft_putchar((char)input + 48);
+		i = nlen_putn((int)input);
 	if (type == 'i')
-		ft_putnbr_fd((int)input, 1);
-	// if (type == 'u')
+		i = nlen_putn((int)input);
+	if (type == 'u')
+		i = print_uint((unsigned int)input, 0);
 	if (type == 'x')
-		printhex((int)input, 'x');
+		i = printhex((int)input, 'x', 0);
 	if (type == 'X')
-		printhex((int)input, 'X');
-}
-
-int	main(void)
-{	
-	char	c = 'h';
-	char	s[] = "lalala";
-	void 	*p;
-	int		d = 5;
-	int		i = 123;
-	unsigned int u = 4294967295;
-	p = &i;
-
-	ft_printf("hello %% %c %s %d %i %p %x %X\nWorld\n", c, s, d, i, p, i, i);
-	printf("hello %% %c %s %d %i %u %p %x %X\nWorld\n", c, s, d, i, u, p, i, i);
+		i = printhex((int)input, 'X', 0);
+	return (i);
 }
