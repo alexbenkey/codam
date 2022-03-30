@@ -6,7 +6,7 @@ SRC =	get_next_line_utils.c		\
 OBJ = $(SRC:.c=.o)
 FLAGS = -Wall -Werror -Wextra 
 BUFFER = -D BUFFER_SIZE=
-SIZE = 40
+SIZE = 5
 
 all: $(NAME)
 
@@ -20,4 +20,3 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
-

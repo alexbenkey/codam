@@ -1,23 +1,29 @@
 #include "get_next_line.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	//int 	i = 0;
+	char	*buf;
 	int		fd;
-	fd = open("testfile", O_RDONLY);
-	//static int BUFFSIZE = 100;
-	//char *buffer = (char *) malloc((BUFFSIZE) * sizeof(char));
-	//read(fd, buffer, BUFFSIZE);
-	//temp = split_nl(buffer);
-	//buffer[BUFFSIZE] = '\0';
-	//printf("\nbuffer: %s", temp);
-	//printf("text: %zd\n", read(fd, buffer, BUFFSIZE));
-	//ft_putstr(buffer);
-	// while (i <= 5)
-	// {
-	// 	printf("line %d: %s", i, get_next_line(fd));
-	// 	i++;
-	// }
-	get_next_line(fd); 
-	close(fd);
+	int		i;
+
+	i = 10;
+	if (argc > 1)
+	{
+		fd = open(argv[1], O_RDONLY);
+		while (i)
+		{
+			buf = get_next_line(fd);
+			if (buf != NULL)
+			{
+				printf("\nmain output: %s \n", buf);
+				free(buf);
+			}
+			if (buf == NULL)
+				printf("Nothing to read.");
+			i--;
+		}
+		close(fd);
+	}
+	else
+		printf("no file to read from.\n");
 }

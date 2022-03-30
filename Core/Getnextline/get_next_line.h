@@ -7,9 +7,15 @@
 # include <stdlib.h>
 
 void	ft_putstr(char *string);
+int		check_malloc(char *mem);
+char	*trim_start(char *buffer, int i);
+char	*trim_end(char *buffer);
+char	*gnl_memset(char *origin, char *destination);
+int		check_for_nl(char *buffer);
+char	*make_return(char *string, int end);
 char	*get_next_line(int fd);
-int		get_line_length(int fd);
-int		get_buf_len(char *string);
-char	*split_nl(char *buffer, int buf_size, int *i);
+void	*ft_calloc(size_t nelem, size_t elsize);
+void	ft_bzero(char *mystring, size_t len);
+int		get_len(char *str);
 
 #endif
