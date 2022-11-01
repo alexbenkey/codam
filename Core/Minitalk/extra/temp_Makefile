@@ -1,0 +1,46 @@
+#-----------------------------------------------------Name
+NAME = 	minitalk
+
+#-----------------------------------------------------Files
+SRC  = 	main.c			\
+		utils.c			\
+		server.c 		\
+		client.c		\
+
+OBJECTS	=	$(SRC:.c=.o)
+
+#-----------------------------------------------------Directories
+LIB	 		=	./src/libft/libft.a
+PRINTF		=   ./src/ft_printf/libftprintf.a
+H_FOLDER	= 	-I./Headers/
+HEADERS		=	
+FLAGS 		= 	-Wall -Werror -Wextra #-fsanitize=address
+CC    		=	gcc
+
+#-----------------------------------------------------Rules
+all: $(NAME)
+
+$(LIB):
+	@$(MAKE) -s -C $(dir $(LIB))
+	@echo "libft made"
+
+$(PRINTF):
+	@$(MAKE) -s -C $(dir $(PRINTF))
+	@echo "ft_printf made"
+
+$(NAME):$(OBJECTS) $(H_FOLDER) $(HEADERS) $(LIB) $(PRINTF)
+	$(CC) $(FLAGS) $(H_FOLDER) $(HEADERS) $(LIB) $(PRINTF) -o $(NAME) $(OBJECTS)
+	@echo "made $(NAME)"
+
+%.o: %.c
+	$(CC) $(FLAGS) $(HEADERS) $(SRC) -c $< -o $@
+
+clean:
+	rm -f $(OBJECTS)
+
+fclean: clean
+	rm -f $(NAME) 
+
+re: fclean all 
+
+.PHONY: clean fclean re all

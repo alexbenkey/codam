@@ -1,0 +1,310 @@
+//int	push_swap(int argc, char **argv)
+
+// int	get_max(int a[], int n)
+// {
+// 	int	max;
+// 	int	i;
+
+// 	i = 0;
+// 	max = a[i];
+// 	while (i < n)
+// 	{
+// 		if (a[i] > max)
+// 			max = a[i];
+// 		i++;
+// 	}
+// 	return (max);
+// }
+
+// void	sort_for_dec(t_top_vals *top, char stack, int dec)
+// {
+// 	int		val;
+// 	t_alist	*sort_stack;
+// 	int		test1;
+
+// 	if (stack == 'a')
+// 		sort_stack = top->top_a;
+// 	if (stack == 'b')
+// 		sort_stack = top->top_b;
+// 	val = 9;
+// 	while (val >= 0)
+// 	{
+// 		while ((check_for_push_vals(sort_stack, val, dec) > -1))
+// 		{
+// 			test1 = (sort_stack->content % 10);
+// 			if (test1 == val)
+// 				push(top, stack);
+// 			else
+// 				rotate(top, stack);
+// 		}
+// 		val--;
+// 	}
+// }
+
+
+// int	check_for_push_vals(t_alist *stack_a, int number, int decimal)
+// {
+// 	// make this function work with both stacks
+// 	t_alist	*temp;
+// 	int		test_i;
+// 	int ph; //remove
+
+// 	ph = decimal; //remove
+// 	test_i = -1;
+// 	temp = stack_a;
+// 	if (!temp)
+// 		return (-1);
+// 	while (temp->next)
+// 	{
+// 		if (((temp->content / square_mod(decimal)) % 10) == number)
+// 			test_i++;
+// 		temp = temp->next;
+// 	}
+// 	if (((temp->content / square_mod(decimal)) % 10) == number)
+// 			test_i++;
+// 	if (test_i == -1)
+// 		return (test_i);
+// 	else
+// 		return (test_i + 1);
+// }
+
+// int	square_mod(int decimal)
+// {
+// 	int	base;
+
+// 	base = 1;
+// 	if (decimal > 0)
+// 	{
+// 		while (decimal)
+// 		{
+// 			base = base * 10;
+// 			decimal--;
+// 		}
+// 		return (base);
+// 	}
+// 	if (decimal == 0)
+// 		return (1);
+// 	else
+// 		return (0);
+// }
+
+// protect the while loop. 
+// could be looking beyond the '0'
+
+// void	ray_dicks_sort(t_top_vals *top)
+// {
+// 	//currently not working at all. 
+// 	//very loosly implemented
+// 	int		size;
+// 	int		max_val;
+// 	int		max_bits;
+// 	t_alist	*stack;
+
+// 	stack = top->top_a;
+// 	size = count_nodes(stack);
+// 	max_val = size - 1;
+// 	max_bits = 0;
+// 	while (!check_sorted(stack) && (max_bits < max_val))
+// 	{
+// 		while (stack)
+// 		{
+// 			if (((stack->index >> max_bits)&1) == 1)
+// 				rotate_a(top);
+// 			else
+// 				push_b(top);
+// 			stack = stack->next;
+// 		}
+// 		while (top->top_b)
+// 			push_a(top);
+// 		max_bits++;
+// 	}
+// }
+
+// void	print_nodes_a(t_top_vals *top)
+// {
+// 	t_alist		*current;
+
+// 	current = top->top_a;
+// 	if (!current)
+// 	{
+// 		write(1, "No Content in stack A\n", 22);
+// 		return ;
+// 	}
+// 	while (current)
+// 	{
+// 		write(1, "\ncurrent content of node ", 25);
+// 		ft_putnbr_fd(current->index, 1);
+// 		write(1, " in stack a: ", 13);
+// 		ft_putnbr_fd(current->content, 1);
+// 		write(1, "\n", 1);
+// 		current = current->next;
+// 	}
+// }
+
+// void	print_nodes_b(t_top_vals *top)
+// {
+// 	t_alist		*current;
+
+// 	current = top->top_b;
+// 	if (!current)
+// 	{
+// 		write(1, "No Content in stack B\n", 22);
+// 		return ;
+// 	}
+// 	while (current->content)
+// 	{
+// 		write(1, "\ncurrent content of node ", 25);
+// 		ft_putnbr_fd(current->index, 1);
+// 		write(1, " in stack b: ", 13);
+// 		ft_putnbr_fd(current->content, 1);
+// 		write(1, "\n", 1);
+// 		current = current->next;
+// 	}
+// }
+
+
+// void	free_all(t_top_vals *top)
+// {
+// 	t_alist	*tmp;
+// 	t_alist	*next;
+
+// 	if (top->top_a)
+// 	{
+// 		tmp = top->top_a;
+// 		while (tmp)
+// 		{
+// 			if (tmp->next)
+// 				next = tmp->next;
+// 			if (tmp)
+// 				free(tmp);
+// 			tmp = next;
+// 		}
+// 	}
+// 	if (top->top_b)
+// 	{
+// 		tmp = top->top_b;
+// 		while (tmp)
+// 		{
+// 			if (tmp->next)
+// 				next = tmp->next;
+// 			if (tmp)
+// 				free(tmp);
+// 			tmp = next;
+// 		}
+// 	}
+// }
+
+
+// void	sort_3(t_top_vals *top)
+// {
+// 	if (top->top_a->index == 0)
+// 	{
+// 		push_b(top);
+// 		rotate_a(top);
+// 		push_a(top);
+// 	}
+// 	else if (top->top_a->index == 1)
+// 	{
+// 		if (top->top_a->next->index == 2)
+// 			reverse_rotate_a(top);
+// 		else
+// 			swap_a(top);
+// 	}
+// 	else if (top->top_a->index == 2)
+// 	{
+// 		if (top->top_a->next->index == 1)
+// 		{
+// 			rotate_a(top);
+// 			swap_a(top);
+// 		}
+// 		else
+// 			rotate_a(top);
+// 	}
+// }
+
+// int	check_for_numbers(int it, char **string)
+// {
+// 	int	i;
+// 	int	x;
+// 	int	r;
+
+// 	r = 0;
+// 	i = 1;
+// 	if (string)
+// 	{
+// 		while (i < it)
+// 		{
+// 			x = ft_atoi(string[i]);
+// 			if ((x > 0) || (x < 0))
+// 				r = 1;
+// 			else
+// 				return (0);
+// 			i++;
+// 		}
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+// char	*ft_strdup(const char *s)
+// {
+// 	int		i;
+// 	char	*newstr;
+
+// 	i = 0;
+// 	while (s[i])
+// 		i++;
+// 	newstr = malloc((i + 1) * sizeof(char));
+// 	if (newstr == 0)
+// 		return ((char *)0);
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		newstr[i] = s[i];
+// 		i++;
+// 	}
+// 	newstr[i] = '\0';
+// 	return ((char *)newstr);
+// }
+
+// void	reverse_sort_3(t_alist *tmp, t_top_vals *top)
+// {
+// 	if (tmp->index > tmp->next->index && tmp->index > tmp->next->next->index)
+// 	{
+// 		push_a(top);
+// 		rotate_b(top);
+// 		push_b(top);
+// 	}
+// 	else if (tmp->index < tmp->next->index && \
+// 	tmp->index < tmp->next->next->index)
+// 	{
+// 		if (tmp->next->index < tmp->next->next->index)
+// 		{
+// 			rotate_b(top);
+// 			swap_b(top);
+// 		}
+// 		else
+// 			rotate_b(top);
+// 	}
+// 	else
+// 	{
+// 		if (tmp->next->index < tmp->index)
+// 			reverse_rotate_b(top);
+// 		else
+// 			swap_b(top);
+// 	}
+// }
+
+// int	check_reverse_sorted(t_alist *lst)
+// {
+// 	t_alist	*temp;
+
+// 	temp = lst;
+// 	while (temp->next)
+// 	{
+// 		if (temp->next->content > temp->content)
+// 			return (0);
+// 		temp = temp->next;
+// 	}
+// 	return (1);
+// }

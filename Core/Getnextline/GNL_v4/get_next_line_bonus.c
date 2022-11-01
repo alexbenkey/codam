@@ -6,7 +6,7 @@
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/08 21:24:49 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/03/18 15:53:33 by avon-ben      ########   odam.nl         */
+/*   Updated: 2022/04/05 12:29:57 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*get_next_line(int fd)
 	char			*rl;
 	char			*tmp;
 
-	if (BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
+	if (BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 || fd > OPEN_MAX)
 		return (NULL);
 	if (!lo_ar[fd])
 		lo_ar[fd] = ft_calloc(BUFFER_SIZE + 1, 1);

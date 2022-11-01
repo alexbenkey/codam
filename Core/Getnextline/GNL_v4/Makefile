@@ -12,7 +12,7 @@ OBJECTB = $(BSRC:.c=.o)
 OBJECT = $(SRC:.c=.o)
 FLAGS = -Wall -Werror -Wextra -g
 BUFFER = -D BUFFER_SIZE=
-SIZE = 10000
+SIZE = 1000000
 
 
 all: $(NAME)

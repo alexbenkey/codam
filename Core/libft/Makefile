@@ -34,8 +34,7 @@ SRC 	= 	ft_atoi.c		\
 			ft_striteri.c	\
 			ft_putendl_fd.c	\
 			ft_putnbr_fd.c 	\
-
-BONUS	=	ft_lstnew.c			\
+			ft_lstnew.c			\
 			ft_lstadd_front.c	\
 			ft_lstsize.c		\
 			ft_lstlast.c		\
@@ -46,15 +45,10 @@ BONUS	=	ft_lstnew.c			\
 			ft_lstmap.c			\
 
 OBJECT  =   $(SRC:.c=.o) 
-OBJECTB =	$(BONUS:.c=.o) 
 FLAGS	=	-Wall -Werror -Wextra
 HEADER	=	libft.h
 
-ifdef WITH_BONUS
-OBJS = $(OBJECT) $(OBJECTB)
-else
 OBJS = $(OBJECT)
-endif
 
 all: $(NAME)
 
@@ -65,7 +59,7 @@ $(NAME): $(OBJS)
 	ar -ru $(NAME) $^
 
 clean: 
-	rm -f $(OBJECT) $(OBJECTB)
+	rm -f $(OBJECT)
 
 fclean: clean
 	rm -f $(NAME) 
