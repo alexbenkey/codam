@@ -6,7 +6,7 @@
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/30 00:28:39 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/10/30 01:37:19 by avon-ben      ########   odam.nl         */
+/*   Updated: 2022/11/04 21:46:55 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_plist	*get_map(char *map)
 	char	**points;
 	int		y;
 
-	top = NULL;
+	top = 0;
 	y = 0;
 	fd = open(map, O_RDONLY);
 	if (!map)
@@ -47,15 +47,11 @@ t_plist	*fill_list(t_plist *top, char **points, int y)
 	while (points[x])
 	{
 		if (!top)
-		{
 			top = fdf_lstnew(x, y, ft_atoi(points[x]));
-			//ft_printf("coordinate %i: x: %i y: %i z: %i\n", i++, top->x, top->y, top->z);
-		}
 		else
 		{
 			new = fdf_lstnew(x, y, ft_atoi(points[x]));
 			fdf_lstadd_back(&top, new);
-			//ft_printf("coordinate %i: x: %i y: %i z: %i\n", i++, new->x, new->y, new->z);
 		}
 		x++;
 	}
@@ -75,9 +71,11 @@ t_plist	*fdf_lstnew(int x, int y, int z)
 	tmp = malloc(sizeof(t_plist));
 	if (tmp)
 	{
-		tmp->x = x;
-		tmp->y = y;
+		tmp->i_x = x;
+		tmp->i_y = y;
 		tmp->z = z;
+		tmp->c_x = 0;
+		tmp->c_y = 0;
 		tmp->next = 0;
 	}
 	return (tmp);

@@ -6,19 +6,11 @@
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 19:47:31 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/11/01 13:59:38 by avon-ben      ########   odam.nl         */
+/*   Updated: 2022/11/04 21:47:37 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "MLX42-master/include/MLX42/MLX42.h"
 #include "FdF.h"
-
-void	draw_vert_line(int height);
-void	draw_horz_line(int size, int pos, int col);
-void	line_move_horz(void);
-int		draw_points(t_plist *top, int col);
-
-mlx_image_t	*g_img;
 
 // void	hook(void *param)
 // {
@@ -37,9 +29,6 @@ mlx_image_t	*g_img;
 // 		g_img->instances[0].x -= 5;
 // 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 // 		g_img->instances[0].x += 5;
-// 	// draw_horz_line(20, 0, 120);
-// 	// sleep(5);
-// 	// draw_horz_line(20, 400, 120);
 // }
 
 void	hook(void *param)
@@ -50,124 +39,238 @@ void	hook(void *param)
 	mlx = param;
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
-	// if (g_img->instances[0].y >= 0 && i == 1)
-	// 	g_img->instances[0].y -= 20;
-	// if (g_img->instances[0].y == 1)
-	// 	i = 0;
-	// if (g_img->instances[0].y <= 600 && i == 0)
-	// 	g_img->instances[0].y += 20;
-	// if (g_img->instances[0].y == 560)
-	// 	i = 1;
 }
 
 int32_t	main(int argc, char **argv)
 {
-	mlx_t	*mlx;
-	char	*str;
-	t_plist	*top;
-	int		i;
+	mlx_image_t		*img;
+	mlx_t			*mlx;
+	t_plist			*top;
+	int				i;
+	int				col;
 
 	top = get_map(argv[1]);
-	//mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	mlx = mlx_init(WIDTH, HEIGHT, "test", true);
+	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
+	mlx = mlx_init(WIDTH, HEIGHT, "test", 1);
 	if (!mlx)
 		exit(EXIT_FAILURE);
-	g_img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	memset(g_img->pixels, 255, g_img->width * g_img->height * sizeof(int));
-	mlx_image_to_window(mlx, g_img, 0, 0);
-	// while (top)
-	// {
-	// 	//ft_printf("coordinate %i: x: %i y: %i z: %i\n", i++, top->x, top->y, top->z);
-	// 	mlx_put_pixel(g_img, (top->x * 5), (top->y * 5), 0);
-	// 	top = top->next;
-	// }
-	draw_points(top, -120);
+	img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	memset(img->pixels, 0, img->width * img->height * sizeof(int));
+	mlx_image_to_window(mlx, img, 0, 0);
+	set_coordinates(top);
+	//print_vals(top);
+	i = draw_grid(top, img);
+	draw_lines(top, img);
 	mlx_loop_hook(mlx, &hook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
 
-void	draw_vert_line(int height)
+int	draw_grid(t_plist *top, mlx_image_t *img)
 {
 	int	i;
+	int	col_val;
 
-	i = 0;
-	while (i < WIDTH)
-		mlx_put_pixel(g_img, i++, height, 120);
-	return ;
-}
-
-void	draw_horz_line(int size, int pos, int col)
-{
-	int	width;
-	int	starting_height;
-
-	width = 0;
-	starting_height = pos;
-	while (pos < (starting_height + size))
+	col_val = 255;
+	while (top)
 	{
-		while (width < WIDTH)
-			mlx_put_pixel(g_img, width++, pos, col);
-		width = 0;
-		pos++;
+		if (top->z == 0)
+			mlx_put_pixel(img, top->c_x, top->c_y, 0xFFFFFF);
+		else
+		{
+			mlx_put_pixel(img, top->c_x, (top->c_y - (top->z * 3)), \
+			(0xFFFFFF));
+		}
+		top = top->next;
+		++i;
 	}
-	return ;
+	return (i);
 }
 
-int	draw_points(t_plist *top, int col)
+int	get_r(int rgba)
+{
+    // Move 3 bytes to the right and mask out the first byte.
+    return ((rgba >> 24) & 0xFF);
+}
+
+void	set_coordinates(t_plist *top)
+{
+	int	diag;
+	int	top_x;
+	int	top_y;
+
+	top->c_x = WIDTH / 2;
+	top->c_y = (HEIGHT - BUF_HEIGHT) / 2;
+	top_x = top->c_x;
+	top_y = top->c_y;
+	if (wider_or_taller(top))
+		diag = get_interval_width(top);
+	else
+		diag = get_interval_height(top);
+	//exit (0);
+	set_first_node(top);
+	while (top->next)
+	{
+		if (top->next->i_y == top->i_y)
+		{
+			top->next->c_y = top->c_y + diag;
+			top->next->c_x = top->c_x + diag;
+		}
+		else
+		{
+			top_x = top_x - diag;
+			top_y = top_y + diag;
+			top->next->c_x = top_x;
+			top->next->c_y = top_y;
+		}
+		top = top->next;
+	}
+}
+
+// returns 1 if the grid is wider than taller, otherwise returns 0
+int	wider_or_taller(t_plist *top)
 {
 	t_plist	*tmp;
-	int		x;
-	int		y;
-	int		row;
-	int		i;
 
-	i = 1;
-	row = 0;
 	tmp = top;
-	if (!top)
-		return (0);
-	while (tmp)
-	{
-		while (row == tmp->y && tmp)
-		{
-			x = ((WIDTH / 2) + (tmp->x * 2));
-			y = ((y + 10) + (tmp->y * 2));
-			if (x >= WIDTH || y >= HEIGHT)
-				return (0);
-			printf("point nr.: %i, row: %i, x: %i, y: %i\n", i, row, x, y);
-			mlx_put_pixel(g_img, x, y, col);
-			tmp = tmp->next;
-			i++;
-		}
-		row += 1;
-		y = row * 5;
-	}
+	while (tmp->next)
+		tmp = tmp->next;
+	if (tmp->i_x > tmp->i_y)
+		return (1);
 	return (0);
 }
 
-// void	line_move_horz(void)
-// {
-// 	int	height;
-// 	int	size;
+int get_interval_width(t_plist *top)
+{
+	t_plist	*tmp;
+	int		number;
+	int		width;
 
-// 	size = 20;
-// 	height = 0;
-// 	//while (1)
-// 	//{
-// 		while (height < (HEIGHT - (size + 1)))
-// 		{
-// 			draw_horz_line(20, (height + 1), 120);
-// 			draw_horz_line(1, height, -120);
-// 			height++;
-// 		}
-// 		//draw_horz_line(3, 300, -128);
-// 		// while (height > (0 + size))
-// 		// {
-// 		// 	draw_horz_line(20, height, 120);
-// 		// 	draw_horz_line(1, (height + 1), 255);
-// 		// 	height--;
-// 		// }	
-// 	//}
+	tmp = top;
+	while (tmp->next->i_y != (tmp->i_y + 1))
+	{
+		//printf("x: %i", tmp->i_x);
+		tmp = tmp->next;
+	}
+	number = tmp->i_x;
+	width = ((WIDTH / 2) - ((WIDTH - BUF_WIDTH) / 2)) / number;
+	return (width);
+}
+
+int get_interval_height(t_plist *top)
+{
+	t_plist	*tmp;
+	int		number;
+	int		height;
+
+	tmp = top;
+	while (tmp)
+		tmp = tmp->next;
+	number = tmp->i_x + tmp->i_y;
+	height = BUF_HEIGHT / number;
+	return (height);
+}
+
+void set_first_node(t_plist *top)
+{
+	top->c_x = WIDTH / 2;
+	top->c_y = (HEIGHT - BUF_HEIGHT) / 2;
+}
+
+void print_vals(t_plist *top)
+{	
+	int	i;
+
+	i = 0;
+	while (top)
+	{
+		printf("node: %i, i_x: %i, i_y: %i, x: %i, y: %i, z: %i\n", i, \
+		top->i_x, top->i_y, top->c_x, top->c_y, top->z);
+		top = top->next;
+		i++;
+	}
+}
+
+// t_two_points	*find_bottom_left(t_plist *top)
+// {
+// 	t_plist			*tmp;
+// 	t_two_points	line;
+// 	int				next_x;
+// 	int				next_y;
+// 	int				i;
+
+// 	i = 0;
+// 	tmp = top;
+// 	while (tmp->next->i_y != (tmp->i_y + 1))
+// 	{
+// 		tmp = tmp->next;
+// 		i++;
+// 	}
+// 	if (tmp->next->i_y == tmp->i_y + 1)
+// 	{
+// 		printf("found node: %i, i_x: %i, i_y: %i, x: %i, y: %i, z: %i\n", i, \
+// 		tmp->i_x, tmp->i_y, tmp->c_x, tmp->c_y, tmp->z);
+// 		next_x = tmp->next->c_x;
+// 		next_y = tmp->next->c_y;
+// 	}
+// 	return (store_2_points(top->c_x, top->c_y, next_x, next_y));
 // }
+
+t_two_points	*find_bottom_left(t_plist *top)
+{
+	static int		current_x = -1;
+	static int		current_y = -1;
+	int				c_x;
+	int				c_y;
+
+	if (current_x == -1)
+	{
+		current_x = top->i_x;
+		current_y = top->i_y;
+	}
+	else
+	{
+		printf("current_x: %d, current_y: %d, top->i_x: %d, top->i_y: %d\n", current_x, current_y, top->i_x, top->i_y);
+		while (current_x != top->i_x && current_y != top->i_y)
+			top = top->next;
+	}
+	current_x = top->i_x;
+	current_y = top->i_y;
+	c_x = top->c_x;
+	c_y = top->c_y;
+	while (top)
+	{
+		if (top->i_x == current_x && (current_y + 1) == top->i_y)
+			return (store_2_points(top->c_x, top->c_y, c_x, c_y));
+		top = top->next;
+	}
+	return (store_2_points(-1, -1, -1, -1));
+}
+
+t_two_points *find_bottom_right(t_plist *top)
+{
+	static int		current_x = -1;
+	static int		current_y = -1;
+
+	if (current_x == -1)
+	{
+		current_x = top->i_x;
+		current_y = top->i_y;
+	}
+	if (!top->next)
+		return (store_2_points(-1, -1, -1, -1));
+	else
+	{
+		while (current_x != top->i_x && current_y != top->i_y)
+			top = top->next;
+	}
+	current_x = top->i_x;
+	current_y = top->i_y;
+	if (top->i_y == top->next->i_y)
+	{
+		printf("current_x: %d, current_y: %d, top->i_x: %d, top->i_y: %d\n", current_x, current_y, top->next->i_x, top->next->i_y);
+		return (store_2_points(top->c_x, top->c_y, top->next->c_x, top->next->c_y));
+	}
+	return (store_2_points(-1, -1, -1, -1));
+}

@@ -16,7 +16,8 @@ LIBFTPRINTF_DIR	=	src/ft_printf
 #FdF variables
 SRC	= 	main.c			\
 		gnl.c 			\
-		input_parser.c
+		input_parser.c	\
+		line_drawer.c
 
 OBJ =	$(SRC:.c=.o)
 #INC	=	Fdf.h
