@@ -5,272 +5,102 @@
 /*                                                     +:+                    */
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/24 19:47:31 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/11/07 23:54:56 by avon-ben      ########   odam.nl         */
+/*   Created: 2022/11/18 16:25:47 by avon-ben      #+#    #+#                 */
+/*   Updated: 2022/12/02 22:28:05 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-// void	hook(void *param)
-// {
-// 	mlx_t	*mlx;
-// 	int 	i;
-
-// 	i = 0;
-// 	mlx = param;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-// 		mlx_close_window(mlx);
-// 	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-// 		g_img->instances[0].y -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-// 		g_img->instances[0].y += 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-// 		g_img->instances[0].x -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-// 		g_img->instances[0].x += 5;
-// }
-
-void	hook(void *param)
+void	fdf_hook_key(mlx_key_data_t keydata, void *m_data)
 {
-	mlx_t		*mlx;
-	static int	i = 0;
+	t_data	*data;	
 
-	mlx = param;
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
+	data = m_data;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(data->mlx);
+	if (keydata.key == MLX_KEY_RIGHT_BRACKET && keydata.action == MLX_PRESS)
+		adjust_z_offset_increase(data);
+	if (keydata.key == MLX_KEY_LEFT_BRACKET && keydata.action == MLX_PRESS)
+		adjust_z_offset_decrease(data);
+	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_REPEAT)
+		adjust_pos_downward(data);
+	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_REPEAT)
+		adjust_pos_upward(data);
+	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_REPEAT)
+		adjust_pos_left(data);
+	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_REPEAT)
+		adjust_pos_right(data);
+	if (keydata.key == MLX_KEY_KP_MULTIPLY && keydata.action == MLX_REPEAT)
+		adjust_z_offset_mult(data);
+	if (keydata.key == MLX_KEY_KP_DIVIDE && keydata.action == MLX_REPEAT)
+		adjust_z_offset_devide(data);
+	if (keydata.key == MLX_KEY_KP_ADD && keydata.action == MLX_PRESS)
+		zoom_in(data);
+	if (keydata.key == MLX_KEY_KP_SUBTRACT && keydata.action == MLX_PRESS)
+		zoom_out(data);
 }
 
 int32_t	main(int argc, char **argv)
 {
 	mlx_image_t		*img;
 	mlx_t			*mlx;
-	t_plist			*top;
-	int				i;
+	t_data			*data;
 	int				col;
 
-	top = get_map(argv[1]);
+	data = malloc(sizeof (t_data));
+	get_map(argv[1], data);
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
-	mlx = mlx_init(WIDTH, HEIGHT, "test", 1);
+	mlx = mlx_init(WIDTH, HEIGHT, "FdF", 1);
 	if (!mlx)
 		exit(EXIT_FAILURE);
 	img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	memset(img->pixels, 0, img->width * img->height * sizeof(int));
+	initialise(data, img, mlx);
+	write_text(data);
+	cover_image(data);
 	mlx_image_to_window(mlx, img, 0, 0);
-	set_coordinates(top);
-	//print_vals(top);
-	i = draw_grid(top, img);
-	draw_lines(top, img);
-	mlx_loop_hook(mlx, &hook, mlx);
+	draw_lines(data);
+	mlx_key_hook(data->mlx, &fdf_hook_key, data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
+	free_all(data);
 	return (EXIT_SUCCESS);
 }
 
-int	draw_grid(t_plist *top, mlx_image_t *img)
+void	initialise(t_data *data, mlx_image_t *img, mlx_t *mlx)
 {
-	int	i;
-	int	col_val;
+	double	interval;
 
-	col_val = 255;
-	while (top)
+	interval = ((double)BUF_WIDTH * ((double)1 - ((double)1 / \
+	(double)START_RATIO)));
+	data->interval = (interval / (float)data->width);
+	data->angle = ANGLE;
+	data->mlx = mlx;
+	data->img = img;
+	data->start_x = (double)WIDTH / (double)START_RATIO;
+	data->start_y = (double)20;
+	data->current_x = data->start_x;
+	data->current_y = data->start_y;
+	data->next_x = data->start_x;
+	data->next_y = data->start_y;
+	data->z_offset = Z_OFFSET;
+}
+
+void	cover_image(t_data *data)
+{
+	double	x;
+	double	y;
+
+	x = 0;
+	y = 0;
+	while (y < HEIGHT)
 	{
-		if (top->z == 0)
-			mlx_put_pixel(img, top->c_x, top->c_y, 0xFFFFFF);
-		else
+		while (x < WIDTH)
 		{
-			mlx_put_pixel(img, top->c_x, (top->c_y - (top->z * 3)), \
-			(0xFFFFFF));
+			mlx_put_pixel(data->img, x, y, 100);
+			x++;
 		}
-		top = top->next;
-		++i;
+		x = 0;
+		y++;
 	}
-	return (i);
-}
-
-int	get_r(int rgba)
-{
-    // Move 3 bytes to the right and mask out the first byte.
-    return ((rgba >> 24) & 0xFF);
-}
-
-void	set_coordinates(t_plist *top)
-{
-	int	diag;
-	int	top_x;
-	int	top_y;
-
-	top->c_x = WIDTH / 2;
-	top->c_y = (HEIGHT - BUF_HEIGHT) / 2;
-	top_x = top->c_x;
-	top_y = top->c_y;
-	if (wider_or_taller(top))
-		diag = get_interval_width(top);
-	else
-		diag = get_interval_height(top);
-	//exit (0);
-	set_first_node(top);
-	while (top->next)
-	{
-		if (top->next->i_y == top->i_y)
-		{
-			top->next->c_y = top->c_y + diag;
-			top->next->c_x = top->c_x + diag;
-		}
-		else
-		{
-			top_x = top_x - diag;
-			top_y = top_y + diag;
-			top->next->c_x = top_x;
-			top->next->c_y = top_y;
-		}
-		top = top->next;
-	}
-}
-
-// returns 1 if the grid is wider than taller, otherwise returns 0
-int	wider_or_taller(t_plist *top)
-{
-	t_plist	*tmp;
-
-	tmp = top;
-	while (tmp->next)
-		tmp = tmp->next;
-	if (tmp->i_x > tmp->i_y)
-		return (1);
-	return (0);
-}
-
-int get_interval_width(t_plist *top)
-{
-	t_plist	*tmp;
-	int		number;
-	int		width;
-
-	tmp = top;
-	while (tmp->next->i_y != (tmp->i_y + 1))
-	{
-		//printf("x: %i", tmp->i_x);
-		tmp = tmp->next;
-	}
-	number = tmp->i_x;
-	width = ((WIDTH / 2) - ((WIDTH - BUF_WIDTH) / 2)) / number;
-	return (width);
-}
-
-int get_interval_height(t_plist *top)
-{
-	t_plist	*tmp;
-	int		number;
-	int		height;
-
-	tmp = top;
-	while (tmp)
-		tmp = tmp->next;
-	number = tmp->i_x + tmp->i_y;
-	height = BUF_HEIGHT / number;
-	return (height);
-}
-
-void set_first_node(t_plist *top)
-{
-	top->c_x = WIDTH / 2;
-	top->c_y = (HEIGHT - BUF_HEIGHT) / 2;
-}
-
-void print_vals(t_plist *top)
-{	
-	int	i;
-
-	i = 0;
-	while (top)
-	{
-		printf("node: %i, i_x: %i, i_y: %i, x: %i, y: %i, z: %i\n", i, \
-		top->i_x, top->i_y, top->c_x, top->c_y, top->z);
-		top = top->next;
-		i++;
-	}
-}
-
-// t_two_points	*find_bottom_left(t_plist *top)
-// {
-// 	t_plist			*tmp;
-// 	t_two_points	line;
-// 	int				next_x;
-// 	int				next_y;
-// 	int				i;
-
-// 	i = 0;
-// 	tmp = top;
-// 	while (tmp->next->i_y != (tmp->i_y + 1))
-// 	{
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	if (tmp->next->i_y == tmp->i_y + 1)
-// 	{
-// 		printf("found node: %i, i_x: %i, i_y: %i, x: %i, y: %i, z: %i\n", i, \
-// 		tmp->i_x, tmp->i_y, tmp->c_x, tmp->c_y, tmp->z);
-// 		next_x = tmp->next->c_x;
-// 		next_y = tmp->next->c_y;
-// 	}
-// 	return (store_2_points(top->c_x, top->c_y, next_x, next_y));
-// }
-
-t_two_points	*find_bottom_left(t_plist *top)
-{
-	static int		current_x = -1;
-	static int		current_y = -1;
-	int				c_x;
-	int				c_y;
-
-	if (current_x == -1)
-	{
-		current_x = top->i_x;
-		current_y = top->i_y;
-	}
-	else
-	{
-		printf("current_x: %d, current_y: %d, top->i_x: %d, top->i_y: %d\n", current_x, current_y, top->i_x, top->i_y);
-		while (current_x != top->i_x && current_y != top->i_y)
-			top = top->next;
-	}
-	current_x = top->i_x;
-	current_y = top->i_y;
-	c_x = top->c_x;
-	c_y = top->c_y;
-	while (top)
-	{
-		if (top->i_x == current_x && (current_y + 1) == top->i_y)
-			return (store_2_points(top->c_x, top->c_y, c_x, c_y));
-		top = top->next;
-	}
-	return (store_2_points(-1, -1, -1, -1));
-}
-
-t_two_points *find_bottom_right(t_plist *top)
-{
-	static int		current_x = -1;
-	static int		current_y = -1;
-
-	if (current_x == -1)
-	{
-		current_x = top->i_x;
-		current_y = top->i_y;
-	}
-	if (!top->next)
-		return (store_2_points(-1, -1, -1, -1));
-	else
-	{
-		while (current_x != top->i_x && current_y != top->i_y)
-			top = top->next;
-	}
-	current_x = top->i_x;
-	current_y = top->i_y;
-	if (top->i_y == top->next->i_y)
-	{
-		printf("current_x: %d, current_y: %d, top->i_x: %d, top->i_y: %d\n", current_x, current_y, top->next->i_x, top->next->i_y);
-		return (store_2_points(top->c_x, top->c_y, top->next->c_x, top->next->c_y));
-	}
-	return (store_2_points(-1, -1, -1, -1));
 }

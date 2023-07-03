@@ -6,7 +6,7 @@
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 18:10:36 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/10/28 15:54:43 by avon-ben      ########   odam.nl         */
+/*   Updated: 2023/01/09 00:29:29 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		int_to_bin(int i);
 void	send_bits(char *string, pid_t serv_pid);
 void	split_and_send(char *text, pid_t serv_pid);
 void	sig_handler(int sig);
-void	error(char *string);
+void	error(char *string);0
 
 char	g_sigbits[8] = "00000000";
 
@@ -30,7 +30,7 @@ int	int_to_bin(int i)
 	{
 		while (j > -1)
 		{
-			if (((i >> j) & 1) == 1)
+			if (((i >> j) & 1) == 1) 
 				g_sigbits[(7 - j)] = '1';
 			else
 				g_sigbits[(7 - j)] = '0';
@@ -73,7 +73,7 @@ void	send_bits(char *string, pid_t serv_pid)
 				write(1, "\na signal error occured\n", 24);
 		}
 		i++;
-		//usleep(100);
+		usleep(100);
 	}
 }
 

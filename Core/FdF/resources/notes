@@ -1,0 +1,9 @@
+to implement: 
+
+- make sure program does not crash when file is to large
+- incorporate colors in input files. 
+- get line drawing to incorporate the angle, so that steep angles still get drawn as lines as opposed to dots. 
+- make map truely isometric, shapewise. 
+- incorporate function pointers (for getting vals from struct) (if necessary)
+- store all vals in 2-d array, ignore linkedlist, draw each value to image streight away. get length and height data per map, run through the map from both directions to g
+

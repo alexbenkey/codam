@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/avon-ben/Documents/codam/Core/Philosophers",
+      "program": "/Users/avon-ben/Documents/codam/Core/Philosophers/build/Debug/outDebug"
+    }
+  ]
+}

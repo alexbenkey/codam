@@ -5,95 +5,99 @@
 /*                                                     +:+                    */
 /*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/30 00:28:39 by avon-ben      #+#    #+#                 */
-/*   Updated: 2022/11/07 23:55:48 by avon-ben      ########   odam.nl         */
+/*   Created: 2022/12/02 18:58:53 by avon-ben      #+#    #+#                 */
+/*   Updated: 2022/12/02 22:20:05 by avon-ben      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-t_plist	*get_map(char *map)
+t_data	*get_map(char *path, t_data *data)
 {
-	t_plist	*top;
 	int		fd;
 	char	*line;
-	char	**points;
 	int		y;
 
-	top = 0;
 	y = 0;
-	fd = open(map, O_RDONLY);
-	if (!map)
+	if (!path)
 		error_exit();
+	fd = open(path, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
-		points = ft_split(line, ' ');
-		top = fill_list(top, points, y);
+		put_map_data(line, data, y);
 		line = get_next_line(fd);
 		y++;
 	}
-	return (top);
+	data->height = y;
+	return (data);
 }
 
-t_plist	*fill_list(t_plist *top, char **points, int y)
+void	put_map_data(char *line, t_data *data, int y)
 {
-	t_plist	*new;
-	int		x;
-	int		i;
+	int			x;
+	char		**splitted;
+	char		**spl_ret;
+	int			len;
 
-	i = 0;
 	x = 0;
-	while (points[x])
+	splitted = ft_split(line, ' ');
+	len = get_len(splitted);
+	if (data->width < len)
+		data->width = len;
+	add_row(data, y, len);
+	while (x < len)
 	{
-		if (!top)
-			top = fdf_lstnew(x, y, ft_atoi(points[x]));
-		else
+		if (has_char(splitted[x], ','))
 		{
-			new = fdf_lstnew(x, y, ft_atoi(points[x]));
-			fdf_lstadd_back(&top, new);
+			spl_ret = ft_split(splitted[x], ',');
+			splitted[x] = spl_ret[0];
 		}
+		data->points[y][x] = get_z_val(splitted[x]);
 		x++;
 	}
-	return (top);
+}
+
+void	add_row(t_data *data, int y, int len)
+{
+	int		**new;
+	int		i;
+	int		test;
+	char	c;
+
+	i = 0;
+	new = (int **)malloc(sizeof(int *) * (y + 1));
+	if (y == 0)
+	{
+		new[0] = (int *)malloc(sizeof(int) * len);
+		data->points = new;
+		return ;
+	}
+	else
+	{
+		while (i < y)
+		{
+			new[i] = data->points[i];
+			i++;
+		}
+	}
+	free (data->points);
+	new[i] = (int *)malloc(sizeof(int) * len);
+	data->points = new;
 }
 
 void	error_exit(void)
 {
-	ft_printf("\nan error occured, program was exited\n");
-	exit(0);
+	write(1, "error!\n", 7);
+	exit (0);
 }
 
-t_plist	*fdf_lstnew(int x, int y, int z)
+int	get_len(char **splitted)
 {
-	t_plist	*tmp;
+	int	i;
 
-	tmp = malloc(sizeof(t_plist));
-	if (tmp)
-	{
-		tmp->i_x = x;
-		tmp->i_y = y;
-		tmp->z = z;
-		tmp->c_x = 0;
-		tmp->c_y = 0;
-		tmp->next = 0;
-	}
-	return (tmp);
-}
-
-void	fdf_lstadd_back(t_plist **lst, t_plist *new)
-{
-	t_plist	*current;
-
-	current = *lst;
-	if (*lst == 0)
-	{
-		*lst = new;
-		return ;
-	}
-	while (current->next != 0)
-	{
-		current = current->next;
-	}
-	current->next = new;
+	i = 0;
+	while (splitted[i])
+		i++;
+	return (i);
 }

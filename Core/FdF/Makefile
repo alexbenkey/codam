@@ -14,18 +14,30 @@ LIBFTPRINTF	=		src/ft_printf/libftprintf.a
 LIBFTPRINTF_DIR	=	src/ft_printf
 
 #FdF variables
-SRC	= 	main.c			\
-		gnl.c 			\
-		input_parser.c	\
-		line_drawer.c
+SRC	= 	input_parser.c							\
+		main.c									\
+		tools.c									\
+		utils.c									\
+		draw_lines.c							\
+		adjusters.c								\
+		adjusters_2.c							\
+		draw_line_tools.c 						\
+		draw_tools.c 							\
+		manipulators.c 							\
+		setters.c 								\
+		z_interpreter.c 						\
+		zoom_adjusters.c						\
+		src/GNL/regular/get_next_line.c			\
+		src/GNL/regular/get_next_line_utils.c	
 
 OBJ =	$(SRC:.c=.o)
-#INC	=	Fdf.h
+//INC	=	Fdf.h
 
 #Compiling Variables:
 CC			=	gcc
 CFLAG		=	-Wall -Wextra -Werror
-INCLUDE     =   -I include -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
+BUFSIZE		=	-D BUFFER_SIZE = 10 
+INCLUDE     =   -I include -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit -g
 RM			=	rm -rf
 
 all: $(LIBFT) $(LIBFTPRINTF) $(MLX) $(NAME) 

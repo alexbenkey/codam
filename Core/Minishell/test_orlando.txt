@@ -1,0 +1,460 @@
+################################################################################
+#																			   #
+#																			   #
+#																			   #
+################################################################################
+################################################################################
+#																			   #
+#									Basic functionality						   #
+#																			   #
+################################################################################
+echo "Lorem ipsum" >file1
+awk '{print $1}' file1
+# Lorem
+​
+export TEST="lorem ipsum | cat -e" && echo $TEST
+# lorem ipsum | cat -e
+​
+!create binary named nl
+echo lorem | nl
+    #  1  lorem
+unset PATH
+echo lorem | nl
+# whatever the binary prints
+​
+echo "$SHELL<"
+# /bin/zsh<
+################################################################################
+#																			   #
+#								Builtins									   #
+#																			   #
+################################################################################
+echo
+echo -n
+echo lorem
+echo "lorem"
+echo -n lorem
+echo -n "lorem"
+echo "-n lorem"
+echo ""
+echo -nnnn lorem
+echo -n -n lorem
+echo -p lorem
+echo "lorem" ipsum
+echo    "    lorem    ipsum    "    
+echo    "    lorem    "    ipsum    
+# 
+# %
+# lorem
+# lorem
+# lorem%
+# lorem%
+# -n lorem
+# 
+# lorem%
+# lorem%
+# -p lorem
+# lorem ipsum
+#     lorem    ipsum    
+#     lorem     ipsum
+export TEMP=$PWD
+cd
+pwd
+cd -
+pwd
+cd .
+pwd
+cd -
+pwd
+cd ..
+pwd
+cd /sgoinfre
+pwd
+cd /non_existing_directory
+pwd
+cd /non/existing/directory
+pwd
+cd /
+pwd
+cd $TEMP
+# /Users/ohengelm
+# /sgoinfre/ohengelm/Codam Core Projects/minisHELL
+# /sgoinfre/ohengelm/Codam Core Projects/minisHELL
+# /sgoinfre/ohengelm/Codam Core Projects/minisHELL
+# /sgoinfre/ohengelm/Codam Core Projects/minisHELL
+# /sgoinfre/ohengelm/Codam Core Projects/minisHELL
+# /sgoinfre/ohengelm/Codam Core Projects
+# /sgoinfre
+# bash: cd: /non_existing_directory: No such file or directory
+# /sgoinfre
+# bash: cd: /non/existing/directory: No such file or directory
+# /sgoinfre
+# /
+​
+export TEST1
+export TEST2=
+export TEST3=lorem
+export TEST4=ipsum
+export TEST4
+export TEST5=dolor
+export TEST5=
+export TEST6=sit TEST7=amet
+export | grep TEST
+# declare -x TEST1=""
+# declare -x TEST2=""
+# declare -x TEST3="lorem"
+# declare -x TEST4="ipsum"
+# declare -x TEST5=""
+# declare -x TEST6="sit"
+# declare -x TEST7="amet"
+echo "$TEST3 $TEST4 dolor $TEST6 $TEST7"
+echo "$TEST3$TEST4dolor$TEST6$TEST7"
+echo "$TEST3 $TEST4 dolor "'"$TEST6"'" $TEST7"
+echo "$TEST3 $TEST4 dolor '"'$TEST6'"' $TEST7"
+echo '$TEST3 $TEST4 dolor $TEST6 $TEST7'
+echo '$TEST3$TEST4dolor$TEST6$TEST7'
+echo '$TEST3 $TEST4 dolor "'"$TEST6"'" $TEST7'
+echo '$TEST3 $TEST4 dolor '"'$TEST6'"' $TEST7'
+# lorem ipsum dolor sit amet
+# loremsitamet
+# lorem ipsum dolor "$TEST6" amet
+# lorem ipsum dolor '$TEST6' amet
+# $TEST3 $TEST4 dolor $TEST6 $TEST7
+# $TEST3$TEST4dolor$TEST6$TEST7
+# $TEST3 $TEST4 dolor "sit" $TEST7
+# $TEST3 $TEST4 dolor 'sit' $TEST7
+unset BEYOND
+export BEYOND="to infinity and $BEYOND"
+echo "run this $BEYOND beyond"
+# run this to infinity and to infinity and  beyond
+export TE0123456789ST="Lorem ipsum"
+echo $TE0123456789ST
+# Lorem ipsum
+export 0 1 2 3 4 5 6 7 8 9 = " " ! - @ [ ] { }
+# bash: export: `0': not a valid identifier
+# bash: export: `1': not a valid identifier
+# bash: export: `2': not a valid identifier
+# bash: export: `3': not a valid identifier
+# bash: export: `4': not a valid identifier
+# bash: export: `5': not a valid identifier
+# bash: export: `6': not a valid identifier
+# bash: export: `7': not a valid identifier
+# bash: export: `8': not a valid identifier
+# bash: export: `9': not a valid identifier
+# bash: export: `=': not a valid identifier
+# bash: export: ` ': not a valid identifier
+# bash: export: `!': not a valid identifier
+# bash: export: `-': not a valid identifier
+# bash: export: `@': not a valid identifier
+# bash: export: `[': not a valid identifier
+# bash: export: `]': not a valid identifier
+# bash: export: `{': not a valid identifier
+# bash: export: `}': not a valid identifier
+​
+unset 0 1 2 3 4 5 6 7 8 9 = " " ! - @ [ ] { }
+# bash: unset: `0': not a valid identifier
+# bash: unset: `1': not a valid identifier
+# bash: unset: `2': not a valid identifier
+# bash: unset: `3': not a valid identifier
+# bash: unset: `4': not a valid identifier
+# bash: unset: `5': not a valid identifier
+# bash: unset: `6': not a valid identifier
+# bash: unset: `7': not a valid identifier
+# bash: unset: `8': not a valid identifier
+# bash: unset: `9': not a valid identifier
+# bash: unset: `=': not a valid identifier
+# bash: unset: ` ': not a valid identifier
+# bash: unset: `!': not a valid identifier
+# bash: unset: `-': not a valid identifier
+# bash: unset: `@': not a valid identifier
+# bash: unset: `[': not a valid identifier
+# bash: unset: `]': not a valid identifier
+# bash: unset: `{': not a valid identifier
+# bash: unset: `}': not a valid identifier
+unset TEST1
+unset TEST2 $TEST3 $TEST4MORE 'TEST5' "TEST6" TEST7
+unset DOESNOTEXIST
+unset
+export | grep TEST
+# declare -x TEST3="lorem"
+# declare -x TEST4="ipsum"
+​
+unset PATH
+echo lorem
+​
+env
+env | grep TEST
+env | grep PWD
+​
+./minishell
+exit
+echo $?
+# 0
+./minishell
+exit 0
+echo $?
+# 0
+./minishell
+exit 23
+echo $?
+# 23
+./minishell
+exit 423
+echo $?
+# 167
+./minishell
+exit -423
+echo $?
+# 89
+./minishell
+exit lorem
+echo $?
+# 255
+./minishell
+exit 23 42
+echo $?
+# 1 (doesnt exit)
+################################################################################
+#																			   #
+#									Quotes									   #
+#																			   #
+################################################################################
+​
+################################################################################
+#																			   #
+#									Redirections							   #
+#																			   #
+################################################################################
+echo "Lorem ipsum" >file1
+cat <file1
+# Lorem ipsum
+echo "Lorem ipsum" > file1 | cat -e > file2
+cat <file1 <file2
+cat <file2 <file1
+# Lorem ipsum
+export TEST="> file1"
+echo "lorem" $TEST | cat -e > file2
+cat <file2
+# lorem > file1$
+echo "dolor sit amet" >file2
+<file1 <file2 cat -e | cat -e
+# dolor sit amet$$
+>file3 cat >file4 <file1 <file2
+cat <file3
+cat <file4
+# dolor sit amet
+echo Lorem | cat | nl >file3 | <file1 nl >>file3 | <file2 nl >>file3
+cat file3
+    #  1  Lorem
+    #  1  Lorem ipsum
+    #  1  dolor sit amet
+#zsh:
+    #  1  Lorem
+    #  1       1  Lorem
+    #  2  Lorem ipsum
+    #  1       1       1  Lorem
+    #  2       2  Lorem ipsum
+    #  3  dolor sit amet
+>file1 echo > file2 >>file1>file1>file3>>file1 Lorem >file3 >file2 ipsum >     file1
+cat file1
+# Lorem ipsum
+echo Lorem ipsum >nl
+cat nl
+# Lorem ipsum
+​
+<<CUT cat
+Hello there
+CUT
+# Hello there
+<<CUT <<CUT cat
+Hello there
+CUT
+General Kenobi
+You are a bold one!
+CUT
+# General Kenobi
+# You are a bold one!
+<<CUT <<TAKE23 cat
+Hello there
+TAKE23
+General Kenobi
+You are a bold one!
+CUT
+KILL HIM!
+TAKE23
+# KILL HIM!
+<<CUT cat
+Hello there
+General $USER
+CUT
+# Hello there
+# General [USER]
+​
+<
+# bash: syntax error near unexpected token `newline'
+echo $?
+# 258
+>
+# bash: syntax error near unexpected token `newline'
+echo $?
+# 258
+<file23
+# bash: file23: No such file or directory
+echo $?
+# 1
+################################################################################
+#																			   #
+#									Bonus									   #
+#																			   #
+################################################################################
+echo "lorem | ipsum" && echo "dolor | sit|   amet" | cat -e
+# lorem | ipsum
+# dolor | sit|   amet$
+echo "lorem | ipsum" || echo "dolor | sit|   amet" | cat -e
+# lorem | ipsum
+export TEST=1 && export TEST=2 | echo -n $TEST && echo $TEST
+# Bash
+# 11
+# Better
+# 22
+​
+eco && echo lorem || echo ipsum
+# bash: eco: command not found
+# ipsum
+eco && echo hello && echo there || echo lorem || echo general || echo Kenobi && echo ipsum || echo "You are a bold one"
+# bash: eco: command not found
+# lorem
+# ipsum
+eco && (echo lorem || echo ipsum)
+# bash: eco: command not found
+################################################################################
+#																			   #
+#									Error									   #
+#																			   #
+################################################################################
+echo lorem ||| cat -e
+echo "lorem ipsum
+echo    "    lorem    ipsum   
+​
+top
+# can mess with STDIN STDOUT STDERR (restore those)
+​
+cat | cat | ls
+# can mess with signals
+​
+################################################################################
+#																			   #
+#									Leaks									   #
+#																			   #
+################################################################################
+echo "Lorem ipsum" >file1
+awk '{print $1}' file1
+export TEST="lorem ipsum | cat -e" && echo $TEST
+echo "$SHELL<"
+echo
+echo -n
+echo lorem
+echo "lorem"
+echo -n lorem
+echo -n "lorem"
+echo "-n lorem"
+echo ""
+echo -nnnn lorem
+echo -n -n lorem
+echo -p lorem
+echo "lorem" ipsum
+echo    "    lorem    ipsum    "    
+echo    "    lorem    "    ipsum    
+export TEMP=$PWD
+cd
+pwd
+cd -
+pwd
+cd .
+pwd
+cd -
+pwd
+cd ..
+pwd
+cd /sgoinfre
+pwd
+cd /non_existing_directory
+pwd
+cd /non/existing/directory
+pwd
+cd /
+pwd
+cd $TEMP
+export TEST1
+export TEST2=
+export TEST3=lorem
+export TEST4=ipsum
+export TEST4
+export TEST5=dolor
+export TEST5=
+export TEST6=sit TEST7=amet
+export | grep TEST
+echo "$TEST3 $TEST4 dolor $TEST6 $TEST7"
+echo "$TEST3$TEST4dolor$TEST6$TEST7"
+echo "$TEST3 $TEST4 dolor "'"$TEST6"'" $TEST7"
+echo "$TEST3 $TEST4 dolor '"'$TEST6'"' $TEST7"
+echo '$TEST3 $TEST4 dolor $TEST6 $TEST7'
+echo '$TEST3$TEST4dolor$TEST6$TEST7'
+echo '$TEST3 $TEST4 dolor "'"$TEST6"'" $TEST7'
+echo '$TEST3 $TEST4 dolor '"'$TEST6'"' $TEST7'
+unset BEYOND
+export BEYOND="to infinity and $BEYOND"
+echo "run this $BEYOND here"
+export TE0123456789ST="Lorem ipsum"
+echo $TE0123456789ST
+export 0 1 2 3 4 5 6 7 8 9 = " " ! - @ [ ] { }
+unset 0 1 2 3 4 5 6 7 8 9 = " " ! - @ [ ] { }
+unset TEST1
+unset TEST2 $TEST3 $TEST4MORE 'TEST5' "TEST6" TEST7
+unset DOESNOTEXIT
+unset
+export | grep TEST
+echo lorem
+env
+env | grep TEST
+env | grep PWD
+echo "Lorem ipsum" >file1
+cat <file1
+echo "Lorem ipsum" > file1 | cat -e > file2
+cat <file1 <file2
+cat <file2 <file1
+export TEST="> file1"
+echo "lorem" $TEST | cat -e > file2
+cat <file2
+echo "dolor sit amet" >file2
+<file1 <file2 cat -e | cat -e
+>file3 cat >file4 <file1 <file2
+cat <file3
+cat <file4
+echo Lorem | cat | nl >file3 | <file1 nl >>file3 | <file2 nl >>file3
+cat file3
+>file1 echo > file2 >>file1>file1>file3>>file1 Lorem >file3 >file2 ipsum >     file1
+cat file1
+echo Lorem ipsum >nl
+cat nl
+<<CUT cat
+Hello there
+CUT
+<<CUT <<CUT cat
+Hello there
+CUT
+General Kenobi
+You are a bold one!
+CUT
+<<CUT <<TAKE23 cat
+Hello there
+TAKE23
+General Kenobi
+You are a bold one!
+CUT
+KILL HIM!
+TAKE23
+echo "lorem | ipsum" && echo "dolor | sit|   amet" | cat -e
+echo "lorem | ipsum" || echo "dolor | sit|   amet" | cat -e
+export TEST=1 && export TEST=2 | echo -n $TEST && echo $TEST
+leaks minishell
