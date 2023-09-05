@@ -1,0 +1,3 @@
+[submodule "Core/Core/cub3d"]
+	path = Core/Core/cub3d
+	url = https://github.com/jcodam/cub3d.git

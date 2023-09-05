@@ -36,7 +36,7 @@ OBJ =	$(SRC:.c=.o)
 #Compiling Variables:
 CC			=	gcc
 CFLAG		=	-Wall -Wextra -Werror
-BUFSIZE		=	-D BUFFER_SIZE = 10 
+BUFSIZE		=	-D BUFFER_SIZE = 10
 INCLUDE     =   -I include -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit -g
 RM			=	rm -rf
 
