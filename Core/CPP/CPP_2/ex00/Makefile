@@ -6,7 +6,7 @@
 #    By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 00:39:51 by alex              #+#    #+#              #
-#    Updated: 2023/10/16 18:13:18 by avon-ben         ###   ########.fr        #
+#    Updated: 2023/10/17 14:28:34 by avon-ben         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJ				= $(SRC:.cpp=.o)
 COMP			= c++
 FLAGS			= -g -Wall -Wextra -Werror -I. -fsanitize=address
 
-NAME			= Fixed
+NAME			= a.out
 
 all:			$(NAME)
 

@@ -1,8 +1,8 @@
 #include "Fixed.hpp"
+#include <math.h>
 
-Fixed::Fixed (void){
+Fixed::Fixed (void) : _fixedPointValue(0) {
 	std::cout << "Default constructor called" << std::endl;
-	this->_fixedPointValue = 0;
 }
 
 Fixed::~Fixed (void){
@@ -10,21 +10,43 @@ Fixed::~Fixed (void){
 }
 
 Fixed &Fixed::operator=(Fixed const &rhs){
-	std::cout << "Copy assignment operator overload called" << std::endl;
+	std::cout << "Copy assignment operator overload" << std::endl;
 	this->_fixedPointValue = rhs.getRawBits();
 	return *this;
 }
 
 Fixed::Fixed(Fixed const &rhs ) {
     std::cout << "Copy constructor called" << std::endl;
-    this->setRawBits(rhs.getRawBits());
+    this->_fixedPointValue = rhs.getRawBits();
+}
+
+Fixed::Fixed(int const rhs ) {
+    std::cout << "int constructor called" << std::endl;
+    this->_fixedPointValue = rhs << _fixedPointValueBits;
+}
+
+Fixed::Fixed(float const rhs ) {
+    std::cout << "Float constructor called" << std::endl;
+    this->_fixedPointValue = (float)std::roundf((rhs * (1 << _fixedPointValueBits)));
 }
 
 int Fixed::getRawBits(void) const{
-	std::cout << "getRawBits member function called" << std::endl;
 	return(this->_fixedPointValue);
 }
 
 void Fixed::setRawBits(int const raw){
 	this->_fixedPointValue = raw;
+}
+
+float 	Fixed::toFloat( void ) const{
+	return ((float)this->getRawBits() / (1 << _fixedPointValueBits));
+}
+
+int 	Fixed::toInt( void ) const{
+	return this->_fixedPointValue >> _fixedPointValueBits;
+}
+
+std::ostream&   operator<<(std::ostream &o, Fixed const &rhs){
+	o << rhs.toFloat();
+	return (o);
 }
