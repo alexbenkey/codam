@@ -6,17 +6,17 @@
 #    By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 00:39:51 by alex              #+#    #+#              #
-#    Updated: 2023/10/22 15:08:53 by avon-ben         ###   ########.fr        #
+#    Updated: 2023/10/14 20:08:06 by avon-ben         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC				= Fixed.cpp Point.cpp bsp.cpp main.cpp 
+SRC				= main.cpp Harl.cpp
 OBJ				= $(SRC:.cpp=.o)
 
 COMP			= c++
-FLAGS			= -g -Wall -Wextra -Werror -fsanitize=address
+FLAGS			= -g -Wall -Wextra -Werror -I. -fsanitize=address
 
-NAME			= a.out
+NAME			= harl
 
 all:			$(NAME)
 

@@ -1,22 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 13:07:06 by avon-ben          #+#    #+#             */
+/*   Updated: 2023/10/03 13:07:07 by avon-ben         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Zombie.hpp"
-
-std::string Zombie::get_name(void) const
-{
-	return (this->_name);
-}
-
-void Zombie::set_name(std::string str)
-{
-	this->_name = str;
-}
-
-void Zombie::announce(void)
-{
-	std::cout << get_name;
-	std::cout << "BraiiiiiiinnnzzzZ..." << std::endl;
-}
 
 int main (void)
 {
+	Zombie *instance = newZombie("james");
+	//Zombie *instance1 = factory.newZombie("steve");
 
+	randomChump("bob");
+	delete instance;
+	//system("leaks zombies");
+	return (0);
 }

@@ -116,7 +116,6 @@ Fixed::Fixed(float const rhs ) {
     this->_fixedPointValue = (float)std::roundf((rhs * (1 << _fixedPointValueBits)));
 }
 
-
 int Fixed::getRawBits(void) const{
 	return(this->_fixedPointValue);
 }

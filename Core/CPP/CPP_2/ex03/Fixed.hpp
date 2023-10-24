@@ -27,12 +27,11 @@ class Fixed
 		Fixed(float const rhs);
 		~Fixed(void);
 
-
-
 		static Fixed 		&min(Fixed &a, Fixed &b);
 		static const Fixed 	&min(Fixed const &a, Fixed const &b);
 		static Fixed 		&max(Fixed &a, Fixed &b);
 		static const Fixed 	&max(Fixed const &a, Fixed const &b);
+
 		int 				getRawBits(void) const;
 		void 				setRawBits(int const raw);
 		float 				toFloat( void ) const;

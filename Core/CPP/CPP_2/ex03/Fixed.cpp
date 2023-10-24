@@ -2,11 +2,11 @@
 #include <cmath>
 
 Fixed::Fixed (void) : _fixedPointValue(0) {
-	//std::cout << "Default constructor called" << std::endl;
+	//std::cout << "Default Fixed constructor called" << std::endl;
 }
 
 Fixed::~Fixed (void){
-	//std::cout << "Default destructor called" << std::endl;
+	//std::cout << "Default Fixed destructor called" << std::endl;
 }
 
 Fixed &Fixed::operator=(Fixed const &rhs){
@@ -115,7 +115,6 @@ Fixed::Fixed(float const rhs ) {
     //std::cout << "Float constructor called" << std::endl;
     this->_fixedPointValue = (float)std::roundf((rhs * (1 << _fixedPointValueBits)));
 }
-
 
 int Fixed::getRawBits(void) const{
 	return(this->_fixedPointValue);
