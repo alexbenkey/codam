@@ -10,12 +10,10 @@ class ScavTrap : public ClapTrap {
         ~ScavTrap(void);
 
         void attack(const std::string &target);
-        void takeDamage(unsigned int amount);
         void guardGate(void);
 
     private:
 
-        int _gatemode;
         ScavTrap(void);
 };
 

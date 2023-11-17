@@ -6,17 +6,17 @@
 #    By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 00:39:51 by alex              #+#    #+#              #
-#    Updated: 2023/10/27 20:08:53 by avon-ben         ###   ########.fr        #
+#    Updated: 2023/10/27 13:29:28 by avon-ben         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC				= ClapTrap.cpp main.cpp 
+SRC				= main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp
 OBJ				= $(SRC:.cpp=.o)
 
 COMP			= c++
 FLAGS			= -g -Wall -Wextra -Werror -I. -fsanitize=address
 
-NAME			= claptrap
+NAME			= animals
 
 all:			$(NAME)
 

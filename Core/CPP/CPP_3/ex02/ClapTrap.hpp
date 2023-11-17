@@ -1,4 +1,4 @@
-#ifndef CLAPTRAP_HPP
+#ifndef CLAPTRAP_HPP 
 # define CLAPTRAP_HPP
 
 # include <iostream>
@@ -23,14 +23,14 @@ class ClapTrap
         int             &get_ad(void);
         void            set_ad(int const ad);
 
-        virtual void attack(const std::string &target);
+        void attack(const std::string &target);
         virtual void takeDamage(unsigned int amount);
         void beRepaired(unsigned int amount);
     
     protected:
 
         std::string _name;
-        int         _hitpoints;
+        int         _healthpoints;
         int         _energypoints;
         int         _attackdamage;
 
