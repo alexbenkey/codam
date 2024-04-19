@@ -60,12 +60,20 @@ const char *Form::GradeTooLowException::what() const throw(){
 	return "grade too low";
 };
 
+const char *Form::AlreadySignedException::what() const throw(){
+	return "form already signed";
+}
+
 void Form::beSigned(Bureaucrat const &signer){
-	if(signer.get_range() > _signGrade){
+	if (this->_signed)
+		throw Form::AlreadySignedException();
+	if(signer.get_grade() > _signGrade){
 		throw Form::GradeTooLowException();
 	}
-	if(signer)
-	_signed = 1;
+	else{
+		_signed = 1;
+		std::cout << "Form " << this->_name << " has been signed by " << signer.get_name() << std::endl; 
+	}
 }
 
 std::ostream &operator<<(std::ostream &o, Form const &rhs){

@@ -11,11 +11,11 @@ HEADER= philosophers.h
 CC= gcc
 
 CFLAGS= -g -Wall -Wextra -Werror
-# CFLAGS+= $(SAN)
+CFLAGS+= $(SAN)
 # CFLAGS+= --coverage
 CFLAGS+= -o
 
-SAN= -fsanitize=address
+SAN= -fsanitize=thread
 
 OO= -O3
 

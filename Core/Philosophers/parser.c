@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/13 18:17:03 by avon-ben      #+#    #+#                 */
-/*   Updated: 2023/06/01 15:10:13 by avon-ben      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/13 18:17:03 by avon-ben          #+#    #+#             */
+/*   Updated: 2023/11/06 14:12:19 by avon-ben         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 t_super	*parse_input(int argc, char **argv)
 {
 	t_super	*super;
-	int		i;
 
-	i = 0;
 	super = malloc(sizeof(t_super));
 	super->count = ft_atoi(argv[1]);
 	super->time_to_die = ft_atoi(argv[2]);

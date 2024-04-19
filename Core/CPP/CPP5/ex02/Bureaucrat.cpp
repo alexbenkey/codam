@@ -1,5 +1,5 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 Bureaucrat::Bureaucrat(void){
 	std::cout << "Bureaucrat constructor called" << std::endl;
@@ -45,7 +45,7 @@ Bureaucrat &Bureaucrat::operator= (Bureaucrat const &rhs){
 }
 
 Bureaucrat::~Bureaucrat(void){
-	std::cout << "Bureaucrat deconstructer called" << std::endl;
+	std::cout << "Bureaucrat denstructer called" << std::endl;
 }
 
 int Bureaucrat::get_grade(void) const{
@@ -80,6 +80,10 @@ void Bureaucrat::decrement_grade(void){
 	}
 }
 
+const char *Bureaucrat::AlreadySignedException::what() const throw(){
+	return "form already signed";
+}
+
 const char *Bureaucrat::GradeTooHighException::what() const throw(){
 	return "grade too high";
 };
@@ -91,16 +95,30 @@ const char *Bureaucrat::GradeTooLowException::what() const throw(){
 std::ostream &operator<<(std::ostream &o, Bureaucrat const &rhs){
 	o << rhs.get_name() << " bureacrat grade: " << std::to_string(rhs.get_grade()) << std::endl;
 	return (o);
-}
+};
 
-void Bureaucrat::signForm(Form &toSign){
+void Bureaucrat::signForm(AForm &toSign){
 	try{
 		toSign.beSigned(*this);
+		// std::cout << "trying to sign " << toSign.get_name() << " by bureaucrat: " << this->get_name() << std::endl; 
 	}
-	catch (Form::GradeTooLowException f){
+	catch (AForm::GradeTooLowException f){
 		std::cout << f.what() << std::endl;
 	}
-	catch (Form::AlreadySignedException f){
+	catch (AForm::AlreadySignedException f){
 		std::cout << f.what() << std::endl;
 	}
-}	
+};
+
+void Bureaucrat::executeForm(AForm const &form, std::string const target){
+	try{
+		form.execute(*this, target);
+		std::cout << this->get_name() << " executed " << form.get_name() << std::endl;
+	}
+	catch (AForm::GradeTooLowException f){
+		std::cout << f.what() << std::endl;
+	}
+	catch (AForm::NotSignedException f){
+		std::cout << f.what() << std::endl;
+	}
+}

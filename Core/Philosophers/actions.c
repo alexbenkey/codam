@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   actions.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/25 18:08:59 by avon-ben      #+#    #+#                 */
-/*   Updated: 2023/06/01 18:51:26 by avon-ben      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/25 18:08:59 by avon-ben          #+#    #+#             */
+/*   Updated: 2023/11/06 14:22:31 by avon-ben         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 static void	eat(t_philo *philo)
 {
-	long long	start_time;
-
 	print(philo, "is eating");
-	start_time = time_stmp();
 	ft_usleep(philo->super->time_to_eat);
 }
 
@@ -52,7 +49,7 @@ void	start_sleeping(t_philo *philo)
 void	is_finished(t_philo *philo)
 {
 	if (philo->last_meal == 0)
-			philo->last_meal = time_stmp();
+		philo->last_meal = time_stmp();
 	if ((time_stmp() - philo->last_meal) > philo->super->time_to_die)
 	{
 		pthread_mutex_lock(&philo->super->p_halt);

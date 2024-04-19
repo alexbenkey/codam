@@ -10,7 +10,7 @@ BSRC =	get_next_line_utils_bonus.c		\
 
 OBJECTB = $(BSRC:.c=.o)
 OBJECT = $(SRC:.c=.o)
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 BUFFER = -D BUFFER_SIZE=
 SIZE = 1000000
 

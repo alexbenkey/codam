@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "Form.hpp"
+#include "AForm.hpp"
 
-class Form;
+class AForm;
 
 class Bureaucrat{
 	public:
@@ -20,8 +20,14 @@ class Bureaucrat{
 		std::string	get_name(void) const;
 		void		increment_grade(void);
 		void		decrement_grade(void);
-		void 		signForm(Form &toSign);
+		void 		signForm(AForm &toSign);
+		void		executeForm(AForm const &form, std::string const target);
 
+
+		class AlreadySignedException: public std::exception{
+			public:
+				virtual const char *what() const throw();
+		};
 		class GradeTooHighException: public std::exception {
 			public:
 				virtual const char *what() const throw();

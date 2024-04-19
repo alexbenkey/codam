@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   atoi.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: avon-ben <avon-ben@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/13 18:54:04 by avon-ben      #+#    #+#                 */
-/*   Updated: 2023/05/13 20:00:17 by avon-ben      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   atoi.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avon-ben <avon-ben@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/13 18:54:04 by avon-ben          #+#    #+#             */
+/*   Updated: 2023/11/06 14:12:31 by avon-ben         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 static int	ft_coreatoi(const char *str, int minus, int n)
 {
-	int			loops;
 	int			zeros;
 	long int	test;
 	int			result;
 
 	result = 0;
 	zeros = 1;
-	loops = n;
 	test = result;
 	while ('0' <= str[n] && '9' >= str[n] && test == result)
 	{
