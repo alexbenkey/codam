@@ -3,12 +3,15 @@
 std::string parse(std::string in){
 	if (in.find("|") == std::string::npos)
 		return ("Error: bad input => " + in);
-	int place = in.find("|");
+	int place = in.find('|');
 	std::vector<std::string> tokens;
 	std::string token;
-	token = in.substr(0, in.find("|"));
+	token = in.substr(0, place);
 	tokens.push_back(token);
-	
+	token = in.substr(place + 1, in.size());
+	tokens.push_back(token);
+	//std::cout << "date: " << tokens[0] << std::endl;
+	//std::cout << "val: " << tokens[1] << std::endl << std::endl;
 	return (in);
 }
 
@@ -22,9 +25,13 @@ int main(int argc, char **argv){
 		std::cerr << "Error: could not open file." << std::endl;
 		exit(0);
 	}
+	BitcoinExchange btc;
+	btc.storeData("data.csv");
+
 	std::string line;
 	while (std::getline(file, line)){
 		std::cout << parse(line)  << std::endl;
+		std:: cout << "found value: " << btc.findValueFromDate(line.substr(0, line.find('|') - 1)) << std::endl;
 	}
 	file.close();
 	return 0;
