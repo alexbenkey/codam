@@ -14,11 +14,9 @@ class BitcoinExchange {
         void findCurrentVal();
         void storeData(std::string data);
         float findValueFromDate(std::string date);
-        std::map<std::string, float> _data;
+        bool matchDates(std::string refDate, std::string checkDate);
 
     private:
-        
-
-        
+        std::map<std::string, float> _data;
 
 };
