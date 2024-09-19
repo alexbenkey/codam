@@ -10,6 +10,7 @@ RPN::RPN(RPN & rhs){
 
 RPN & RPN::operator=(RPN & rhs){
 	this->_result = rhs._result;
+	this->_formula = rhs._formula;
 	return *this;
 };
 

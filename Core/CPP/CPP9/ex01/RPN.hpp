@@ -25,7 +25,5 @@ class RPN {
 
 		int					_result;
 		std::deque<char> 	_formula;
-		std::deque<int>		_int_vals;
-		std::deque<char>	_int_symbols;
 
 };
