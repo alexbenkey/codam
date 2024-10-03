@@ -7,7 +7,6 @@
 #include <string>
 #include <stdio.h>
 #include <string.h>
-#include <bits/stdc++.h> 
 
 class PmergeMe{
 	public:
@@ -29,6 +28,10 @@ class PmergeMe{
 
 		int  				listGet(std::list<int> list, int place);
 		void  				listSet(std::list<int> & list, int place, int val);
+
+		void				recursiveSortPairs(std::list<int> &list, std::vector<int> &vec, size_t start);
+		void				sortpairs(std::list<int> &list, std::vector<int> &vec);
+		void				binarySearch(std::list<int> &list, std::vector<int> & vec);
 
 
 };
