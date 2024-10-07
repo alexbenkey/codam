@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <ostream>
 #include <list>
 #include <vector>
 #include <ctime>
@@ -17,7 +18,7 @@ class PmergeMe{
 
 		void				sort_vec(std::vector<int> &vec);
 		bool				isSortedVec(std::vector<int> &vec);
-		std::vector<int> 	splitVals(std::list<int> &list);
+		std::vector<int> 	splitValsVec(std::vector<int> &vec);
 		std::vector<int> 	&getList(void);
 
 		size_t				findLowValVec(const std::vector<int>& vec, size_t start);
@@ -29,9 +30,26 @@ class PmergeMe{
 		int  				listGet(std::list<int> list, int place);
 		void  				listSet(std::list<int> & list, int place, int val);
 
-		void				recursiveSortPairs(std::list<int> &list, std::vector<int> &vec, size_t start);
-		void				sortpairs(std::list<int> &list, std::vector<int> &vec);
+		void				recursiveSortPairsVec(std::vector<int> &vec1, std::vector<int> &vec2, size_t start);
+		void				sortPairsVec(std::vector<int> &vec1, std::vector<int> &vec2);
 		void				binarySearch(std::list<int> &list, std::vector<int> & vec);
 
+		//void				sortIntoMain(int val, int pos, std::vector<int> &vec1);
 
 };
+
+// std::ostream &operator<<(std::ostream &os, const std::vector<int> &container){
+// 	for (std::vector<int>::const_iterator it = container.begin(); it != container.end(); it++)
+// 	{
+// 		os << *it << " ";
+// 	}
+// 	return os;
+// }
+
+// std::ostream &operator<<(std::ostream &os, const std::list<int> &container){
+// 	for (std::list<int>::const_iterator it = container.begin(); it != container.end(); it++)
+// 	{
+// 		os << *it << " ";
+// 	}
+// 	return os;
+// }

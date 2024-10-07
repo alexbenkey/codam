@@ -11,8 +11,9 @@ int ft_strcmp(char * s1, char * s2){
 
 int main(int argc, char **argv){
 
-	std::list<int> 			list;
-	std::vector<int> 		vec;
+	std::vector<int> 		vec1;
+	std::vector<int> 		vec2;
+	int 					extraval = 0;		
 
 	// double				listTime;
 	// double				dequeTime;
@@ -26,6 +27,7 @@ int main(int argc, char **argv){
 		return 1;
 	}
 	PmergeMe p;
+	//check odd, if odd add to extraval
 	for (int i = 1; i < argc; i++){
 		for ( size_t j = 0; j < strlen(argv[i]); j++){
 			if (!std::isdigit(j + '0')){
@@ -33,25 +35,39 @@ int main(int argc, char **argv){
 				exit (1);
 			}
 		}
-		list.push_back(std::stoi(argv[i]));
+		vec1.push_back(std::stoi(argv[i]));
 	}
-	vec = p.splitVals(list);
-	std::cout << "vector: " << std::endl;
-	for (auto i : vec)
-	std::cout << i << std::endl;
-	std::cout << "list: " << std::endl;
-	for (auto j : list)
-	std::cout << j << std::endl;
-	p.sortpairs(list, vec);
-	p.recursiveSortPairs(list, vec, 0);
-	vec.insert(vec.begin(), p.listGet(list, 0));
+	if(vec1.size() % 2 != 0){
+		//std::cout << "uneven" << std::endl;
+		extraval = vec1[vec1.size() - 1];
+		vec1.pop_back();
+	}
+	else
+		(void)extraval;
+	// else
+	// 	std::cout << "even" << std::endl;
+	vec2 = p.splitValsVec(vec1);
+	p.sortPairsVec(vec1, vec2);
+	p.recursiveSortPairsVec(vec1, vec2, 0); // make sure that there is no issue when odd numbers 
+	vec1.insert(vec1.begin(), vec2[0]);
+	vec2.erase(vec2.begin());
+	int pos = 0;
+	for (auto v : vec2) {
+		pos++;
+		p.sortIntoMain(v, pos, vec1);
+	}
 	p.binaryAdd(list, vec);
 
-	//list.insert(vec[0]);
-	std::cout << "vector: " << std::endl;
-	for (auto i : vec)
-		std::cout << i << std::endl;
-	std::cout << "list: " << std::endl;
-	for (auto j : list)
-		std::cout << j << std::endl;
+	//vec1.insert(vec[0]);
+	// std::cout << "vec1: " << &vec1 << std::endl;
+	// std::cout << "vec2: " << &vec2 << std::endl;
+	std::cout << "extraval: " << extraval << std::endl; 
+
+	std::cout << "vec1: " << std::endl;
+	for (auto i : vec1)
+	std::cout << i << std::endl;
+	std::cout << "vec2: " << std::endl;
+	for (auto j : vec2)
+	std::cout << j << std::endl;
 }
+

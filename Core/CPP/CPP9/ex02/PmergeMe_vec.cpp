@@ -12,48 +12,6 @@ PmergeMe & PmergeMe::operator=(PmergeMe & rhs){
 	return rhs;
 };
 
-// size_t PmergeMe::findLowValList(const std::list<int>& list, size_t start) {
-//     size_t  lowValIndex = start;
-//     for (size_t  i = start + 1; i < list.size(); i++) {
-//         if (listGet(list, i) < listGet(list, lowValIndex)) {
-//             lowValIndex = i;
-//         }
-//     }
-//     return lowValIndex;
-// }
-
-// void  PmergeMe::listSet(std::list<int> & list, int place, int val){
-//     std::list<int>::iterator it = list.begin();
-//     for(int i=0; i < place; i++){
-//         ++it;
-//     }
-//     *it = val;
-// }
-
-// int  PmergeMe::listGet(std::list<int> list, int place){
-//     std::list<int>::iterator it = list.begin();
-//     for(int i=0; i < place; i++){
-//         ++it;
-//     }
-//     return *it;
-// }
-
-// void PmergeMe::recursiveSortList(std::list<int>& list, size_t start) {
-//     int temp1;
-//     int temp2;
-//     if ((size_t)start >= list.size() - 1) {
-//         return;
-//     }
-//     size_t  minIndex = findLowValList(list, start);
-//     if (minIndex != start) {
-//         temp1 = listGet(list, start);
-//         temp2 = listGet(list, minIndex);
-//         listSet(list, start, temp2);
-//         listSet(list, minIndex, temp1);
-//     }
-//     recursiveSortList(list, start + 1);
-// }
-
 size_t PmergeMe::findLowValVec(const std::vector<int>& vec, size_t start) {
     size_t  lowValIndex = start;
     for (size_t  i = start + 1; i < vec.size(); i++) {
@@ -75,48 +33,50 @@ void PmergeMe::recursiveSortVec(std::vector<int>& vec, size_t start) {
     recursiveSortVec(vec, start + 1);
 }
 
-std::vector<int> PmergeMe::splitVals(std::list<int> &list){
-	if (list.empty())
-		std::cout << "no list" << std::endl;
-	int len = ((list).size());
+std::vector<int> PmergeMe::splitValsVec(std::vector<int> &vec){
+	if (vec.empty())
+		std::cout << "no vector" << std::endl;
+	int len = (vec.size());
 	std::vector<int> l;
 	for (int i = 0; i < len / 2; i++){
-		l.push_back(list.back());
-		list.pop_back();
+		l.push_back(vec.back());
+		vec.pop_back();
 	}
 	return l;
 }
 
-void PmergeMe::recursiveSortPairs(std::list<int> &list, std::vector<int> &vec, size_t start){
-    int temp;
-    if ((size_t)start >= vec.size() - 1) {
+void PmergeMe::recursiveSortPairsVec(std::vector<int> &vec1, std::vector<int> &vec2, size_t start){
+    if ((size_t)start >= vec1.size() - 1) {
         return;
     }
-    size_t  minIndex = findLowValVec(vec, start);
+    size_t  minIndex = findLowValVec(vec1, start);
     if (minIndex != start) {
-        std::swap(vec[start], vec[minIndex]);
-        temp = listGet(list, start);
-        listSet(list, start, listGet(list, minIndex));
-        listSet(list, minIndex, temp);
+        std::swap(vec1[start], vec1[minIndex]);
+        std::swap(vec2[start], vec2[minIndex]);
     }
-    recursiveSortPairs(list, vec, start + 1);
+    recursiveSortPairsVec(vec1, vec2, start + 1);
 }
 
-void PmergeMe::sortpairs(std::list<int> &list, std::vector<int> &vec){
+void PmergeMe::sortPairsVec(std::vector<int> &vec1, std::vector<int> &vec2){
     size_t temp;
-    for (size_t i = 0; i < list.size(); i++) {
-        if (listGet(list, i) < vec[i]){
-            temp = listGet(list, i);
-            listSet(list, i, vec[i]);
-            vec[i] = temp;
+    for (size_t i = 0; i < vec1.size(); i++) {
+        if (vec1[i] < vec2[i] && vec2[i]){
+            temp = vec1[i];
+            vec1[i] = vec2[i];
+            vec2[i] = temp;
         }
     }
 }
 
-void PmergeMe::binarySearch(std::list<int> &list, std::vector<int> &vec){
-    for (int i = 1; i < list.size(); i++){
+// void PmergeMe::sortIntoMain(int val, int pos, std::vector<int> & vec1){
+
+    
+// }   
+
+// void PmergeMe::binarySearch(std::list<int> &list, std::vector<int> &vec){
+//     for (int i = 1; i < list.size(); i++){
         
-    }
-}
+//     }
+// }
 
 PmergeMe::~PmergeMe(){};

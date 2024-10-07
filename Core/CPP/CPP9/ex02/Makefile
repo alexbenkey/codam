@@ -18,7 +18,7 @@ RM			= rm -rf
 
 OBJDIR 		= build
 
-FILES		= main PmergeMe
+FILES		= main PmergeMe_vec PmergeMe_list
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))
