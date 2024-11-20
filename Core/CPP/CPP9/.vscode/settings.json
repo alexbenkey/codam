@@ -52,6 +52,9 @@
         "stdexcept": "cpp",
         "typeinfo": "cpp",
         "unordered_map": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "list": "cpp",
+        "deque": "cpp",
+        "stack": "cpp"
     }
 }
